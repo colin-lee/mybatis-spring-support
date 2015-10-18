@@ -139,7 +139,7 @@ public class LazyConnection implements InvocationHandler {
 
       // Fetch physical Connection from DataSource.
       DruidDataSource ds = router.determineTargetDataSource(readOnly);
-      TraceContext.get().setServerName("mysql:" + router.getConfigName()).setUrl(extractHost(ds.getUrl()));
+      TraceContext.get().setServerName(router.getConfigName()).setUrl(extractHost(ds.getUrl()));
       this.target = (this.username != null) ? ds.getConnection(this.username, this.password) : ds.getConnection();
 
       // If we still lack default connection properties, check them now.
@@ -167,7 +167,7 @@ public class LazyConnection implements InvocationHandler {
 
   private String extractHost(String url) {
     int start = url.startsWith("jdbc:") ? 5 : 0;
-    int stop = CharMatcher.anyOf("?:").indexIn(url);
+    int stop = CharMatcher.anyOf("?;").indexIn(url, start + 1);
     if (stop == -1) {
       stop = url.length();
     }

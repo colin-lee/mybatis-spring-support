@@ -1,0 +1,4 @@
+username=sa
+password=
+masterUrl=jdbc:h2:mem:blog;DB_CLOSE_DELAY=-1
+slaveUrl=jdbc:h2:mem:blog;MVCC=TRUE

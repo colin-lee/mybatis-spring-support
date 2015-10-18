@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- Root Context: defines shared resources visible to all other web components -->
+    <context:component-scan base-package="com.github.mybatis.service"/>
+    <!-- blocked autowire -->
+    <context:annotation-config/>
+    <bean id="h2LocalDataSource" class="com.github.mybatis.spring.DynamicDataSource">
+        <property name="configName" value="h2-memory"/>
+    </bean>
+    <!-- define the SqlSessionFactory -->
+    <bean id="h2LocalSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="h2LocalDataSource"/>
+        <property name="typeAliasesPackage" value="com.github.mybatis.entity"/>
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
+    </bean>
+    <!-- scan for mappers and let them be autowired -->
+    <bean id="h2LocalScanner" class="com.github.mybatis.spring.ScannerConfigurer">
+        <property name="basePackage" value="com.github.mybatis.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="h2LocalSqlSessionFactory"/>
+    </bean>
+</beans>

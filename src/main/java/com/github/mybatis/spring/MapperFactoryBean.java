@@ -143,7 +143,7 @@ public class MapperFactoryBean<T> extends SqlSessionDaoSupport implements Factor
           throw e;
         } finally {
           rpc.setCost(System.currentTimeMillis() - start);
-          TraceRecorder.getInstance().post(rpc);
+          TraceRecorder.getInstance().post(rpc.copy());
         }
       }
     });
