@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.github.autoconf.ConfigFactory;
 import com.github.autoconf.api.IChangeListener;
 import com.github.autoconf.api.IConfig;
+import com.github.autoconf.api.IConfigFactory;
 import com.github.mybatis.util.CloseableUtil;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -24,7 +25,8 @@ import java.util.List;
  * Created by lirui on 15/1/7.
  */
 public class DynamicDataSource extends AbstractDataSource implements InitializingBean, DisposableBean {
-  private static final Logger log = LoggerFactory.getLogger(DynamicDataSource.class);
+  private static final Logger LOG = LoggerFactory.getLogger(DynamicDataSource.class);
+  private IConfigFactory configFactory;
   private String configName;
   private boolean autoCommit = true;
   private DruidDataSource writer;
@@ -36,6 +38,14 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
 
   public void setConfigName(String configName) {
     this.configName = configName;
+  }
+
+  public IConfigFactory getConfigFactory() {
+    return configFactory;
+  }
+
+  public void setConfigFactory(IConfigFactory configFactory) {
+    this.configFactory = configFactory;
   }
 
   public boolean isAutoCommit() {
@@ -64,7 +74,10 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
 
   @Override
   public void afterPropertiesSet() throws Exception {
-    ConfigFactory.getInstance().getConfig(configName, new IChangeListener() {
+    if (configFactory == null) {
+      configFactory = ConfigFactory.getInstance();
+    }
+    configFactory.getConfig(configName, new IChangeListener() {
       @Override
       public void changed(IConfig conf) {
         String masterUrl = conf.get("masterUrl");
@@ -109,6 +122,8 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
   public void destroy() throws Exception {
     CloseableUtil.closeQuietly(writer);
     CloseableUtil.closeQuietly(reader);
+    writer = null;
+    reader = null;
   }
 
   private DruidDataSource buildDruidDataSource(String key, String url, String username, String password) {
@@ -122,7 +137,7 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
     try {
       ds.setFilters("stat,mergeStat,slf4j");
     } catch (Exception e) {
-      log.error("cannot add slf4j filter with {}", url, e);
+      LOG.error("cannot add slf4j filter with {}", url, e);
     }
     ds.setMaxActive(200);
     ds.setInitialSize(5);
@@ -139,10 +154,10 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
     try {
       ds.init();
     } catch (Exception e) {
-      log.error("cannot init [{}]", url, e);
+      LOG.error("cannot init [{}]", url, e);
     } finally {
       long cost = System.currentTimeMillis() - start;
-      log.info("build dataSource({}) url={}, cost {}ms", ds.getName(), url, cost);
+      LOG.info("build dataSource({}) url={}, cost {}ms", ds.getName(), url, cost);
     }
     return ds;
   }

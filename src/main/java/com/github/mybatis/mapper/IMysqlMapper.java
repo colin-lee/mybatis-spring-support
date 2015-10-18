@@ -4,7 +4,6 @@ import org.apache.ibatis.annotations.Select;
 
 /**
  * mysql特定的一些查询
- *
  * Created by lirui on 2014/10/30.
  */
 public interface IMysqlMapper {
