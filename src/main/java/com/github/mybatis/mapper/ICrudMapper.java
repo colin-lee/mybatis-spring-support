@@ -14,8 +14,6 @@ import java.util.List;
 public interface ICrudMapper<T> {
   /**
    * 查找所有记录
-   *
-   * @return
    */
   @SelectProvider(type = CrudProvider.class, method = "findAll")
   @AutoResultMap
@@ -23,8 +21,6 @@ public interface ICrudMapper<T> {
 
   /**
    * 统计所有记录行数
-   *
-   * @return
    */
   @SelectProvider(type = CrudProvider.class, method = "countAll")
   @FillEntityType
@@ -39,8 +35,6 @@ public interface ICrudMapper<T> {
 
   /**
    * 删除并创建一个同名的新表，可以回收innodb表空间，而且比deleteAll快，多用于测试case清理数据
-   *
-   * @return
    */
   @DeleteProvider(type = CrudProvider.class, method = "truncate")
   @AutoResultMap
@@ -48,9 +42,6 @@ public interface ICrudMapper<T> {
 
   /**
    * 根据主键查找记录
-   *
-   * @param id
-   * @return
    */
   @SelectProvider(type = CrudProvider.class, method = "findById")
   @AutoResultMap
@@ -58,16 +49,12 @@ public interface ICrudMapper<T> {
 
   /**
    * 插入记录
-   *
-   * @param t
    */
   @InsertProvider(type = CrudProvider.class, method = "insert")
   int insert(T t);
 
   /**
    * 插入记录并且取回自动生成的ID
-   *
-   * @param t
    */
   @InsertProvider(type = CrudProvider.class, method = "insert")
   @Options(useGeneratedKeys = true)
@@ -75,32 +62,24 @@ public interface ICrudMapper<T> {
 
   /**
    * 更新记录
-   *
-   * @param t
    */
   @UpdateProvider(type = CrudProvider.class, method = "update")
   int update(T t);
 
   /**
    * 更新记录
-   *
-   * @param t
    */
   @UpdateProvider(type = CrudProvider.class, method = "save")
   int save(T t);
 
   /**
    * 删除记录
-   *
-   * @param t
    */
   @DeleteProvider(type = CrudProvider.class, method = "delete")
   int delete(T t);
 
   /**
    * 根据主键删除记录
-   *
-   * @param id
    */
   @DeleteProvider(type = CrudProvider.class, method = "deleteById")
   @AutoResultMap

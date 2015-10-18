@@ -95,10 +95,10 @@ public class UnicodeFormatter {
   }
 
   /**
-   * utf8可以编码1-6字节的字符，但是mysql5.5版本之前只能支持3字节，这里针对4字节以上的进行编码。 <br/>
-   * http://baike.baidu.com/view/25412.htm <br/>
-   * 正常汉字范围在 4e00 - 9fa5，全角字符在 ff00 - ffef，超过这个范围的就使用unicode进行编码。<br/>
-   * 针对已经是\\uxxxx编码的pattern，在其前面放一个0x03的不可见字符做标识，decode的时候不做处理。<br/>
+   * utf8可以编码1-6字节的字符，但是mysql5.5版本之前只能支持3字节，这里针对4字节以上的进行编码。
+   * http://baike.baidu.com/view/25412.htm
+   * 正常汉字范围在 4e00 - 9fa5，全角字符在 ff00 - ffef，超过这个范围的就使用unicode进行编码。
+   * 针对已经是\\uxxxx编码的pattern，在其前面放一个0x03的不可见字符做标识，decode的时候不做处理。
    * @param s
    * @return
    */
@@ -143,7 +143,7 @@ public class UnicodeFormatter {
   }
 
   /**
-   * 转换&#123;这种编码为正常字符<br/>
+   * 转换&#123;这种编码为正常字符
    * 有些手机会将中文转换成&#123;这种编码,这个函数主要用来转换成正常字符.
    *
    * @param str 待转换字符
@@ -164,7 +164,7 @@ public class UnicodeFormatter {
   }
 
   /**
-   * 转换\\u123这种编码为正常字符<br/>
+   * 转换\\u123这种编码为正常字符
    *
    * @param s 待转换字符
    * @return String

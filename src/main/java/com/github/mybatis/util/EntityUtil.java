@@ -116,7 +116,7 @@ public final class EntityUtil {
   }
 
   /**
-   * 将当前的类名转换成数据库表名或者列名。<br/>
+   * 将当前的类名转换成数据库表名或者列名。
    * 例如：Blog -> blog， HTTPClient -> http_client, BlogAuthor -> blog_author
    *
    * @return 转换后的名字
