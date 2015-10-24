@@ -81,6 +81,10 @@ public class DynamicDataSource extends AbstractDataSource implements Initializin
       @Override
       public void changed(IConfig conf) {
         String masterUrl = conf.get("masterUrl");
+        if (Strings.isNullOrEmpty(masterUrl)) {
+          LOG.error("cannot init {}", conf.getName());
+          return;
+        }
         String username = conf.get("username");
         String password = conf.get("password");
         // 分开读和写的接口，这样互不影响，必要时可以停止读或者写
